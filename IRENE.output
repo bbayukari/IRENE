@@ -1,0 +1,73 @@
+IRENE(
+  (transformer): Transformer(
+    (embeddings): Embeddings(
+      (patch_embeddings): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16)) # in_channels should change to 1
+      (cc_embeddings): Linear(in_features=768, out_features=768, bias=True)
+      (lab_embeddings): Linear(in_features=1, out_features=768, bias=True)
+      (sex_embeddings): Linear(in_features=1, out_features=768, bias=True)
+      (age_embeddings): Linear(in_features=1, out_features=768, bias=True)
+      (dropout): Dropout(p=0.3, inplace=False)
+      (dropout_cc): Dropout(p=0.3, inplace=False)
+      (dropout_lab): Dropout(p=0.3, inplace=False)
+      (dropout_sex): Dropout(p=0.3, inplace=False)
+      (dropout_age): Dropout(p=0.3, inplace=False)
+    )
+    (encoder): Encoder(
+      (layer): ModuleList(
+        (0-1): 2 x Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (att_norm_text): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm_text): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_text): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (dropout): Dropout(p=0.3, inplace=False)
+          )
+          (ffn): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (dropout): Dropout(p=0.3, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (query_text): Linear(in_features=768, out_features=768, bias=True)
+            (key_text): Linear(in_features=768, out_features=768, bias=True)
+            (value_text): Linear(in_features=768, out_features=768, bias=True)
+            (out_text): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout_text): Dropout(p=0.2, inplace=False)
+            (attn_dropout_it): Dropout(p=0.2, inplace=False)
+            (attn_dropout_ti): Dropout(p=0.2, inplace=False)
+            (proj_dropout_text): Dropout(p=0.2, inplace=False)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.2, inplace=False)
+            (proj_dropout): Dropout(p=0.2, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (2-11): 10 x Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): Mlp(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (dropout): Dropout(p=0.3, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.2, inplace=False)
+            (proj_dropout): Dropout(p=0.2, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+      )
+      (encoder_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    )
+  )
+  (head): Linear(in_features=768, out_features=8, bias=True)
+)

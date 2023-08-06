@@ -14,7 +14,7 @@ import pandas as pd
 from PIL import Image
 import argparse
 from apex import amp
-from sklearn.metrics.ranking import roc_auc_score
+from sklearn.metrics import roc_auc_score
 from models.modeling_irene import IRENE, CONFIGS
 from tqdm import tqdm
 import argparse

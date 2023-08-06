@@ -70,7 +70,7 @@ class Embeddings(nn.Module):
 
         if self.hybrid:
             x = self.hybrid_model(x)
-        x = self.patch_embeddings(x) # 16*16 --> CNN --> 1*1
+        x = self.patch_embeddings(x) # 3*224*224 --> CNN(3, 768, 16, 16) --> 768*14*14
         cc = self.cc_embeddings(cc)
         lab = self.lab_embeddings(lab)
         sex = self.sex_embeddings(sex)
