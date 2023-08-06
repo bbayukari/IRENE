@@ -39,10 +39,9 @@ class Transformer(nn.Module):
         self.embeddings = Embeddings(config, img_size=img_size)
         self.encoder = Encoder(config, vis)
 
-    def forward(self, input_ids, cc=None, lab=None, sex=None, age=None):
-        embedding_output, cc, lab, sex, age = self.embeddings(input_ids, cc, lab, sex, age)
-        text = torch.cat((cc, lab, sex, age), 1)
-        encoded, attn_weights = self.encoder(embedding_output, text)
+    def forward(self, img, lab=None):
+        img, lab = self.embeddings(img, lab)
+        encoded, attn_weights = self.encoder(img, lab)
         return encoded, attn_weights
 
 
@@ -56,8 +55,8 @@ class IRENE(nn.Module):
         self.transformer = Transformer(config, img_size, vis)
         self.head = Linear(config.hidden_size, num_classes)
 
-    def forward(self, x, cc=None, lab=None, sex=None, age=None, labels=None):
-        x, attn_weights = self.transformer(x, cc, lab, sex, age)
+    def forward(self, x, lab=None, labels=None):
+        x, attn_weights = self.transformer(x, lab)
         logits = self.head(torch.mean(x, dim=1))
 
         if labels is not None:

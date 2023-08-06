@@ -27,6 +27,6 @@ def get_IRENE_config():
     config.transformer.dropout_rate = 0.3 # 0.1 - 0.3
     config.classifier = 'token'
     config.representation_size = None
-    config.cc_len = 40
-    config.lab_len = 92
+    config.cc_len = 0
+    config.lab_len = 53
     return config
