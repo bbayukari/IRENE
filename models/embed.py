@@ -61,7 +61,7 @@ class Embeddings(nn.Module):
         if self.hybrid:
             img = self.hybrid_model(img)
         img = self.patch_embeddings(img)
-        lab = self.lab_embeddings(lab)
+        lab = self.lab_embeddings(torch.unsqueeze(lab, 2))
 
         img = img.flatten(2)
         img = img.transpose(-1, -2)
@@ -72,7 +72,7 @@ class Embeddings(nn.Module):
 
         embeddings = self.dropout(embeddings)
         lab_embeddings = self.dropout_lab(lab_embeddings)
-        return embeddings, cc_embeddings, lab_embeddings, sex_embeddings, age_embeddings
+        return embeddings, lab_embeddings
 
 
 
