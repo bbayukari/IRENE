@@ -99,7 +99,7 @@ class Attention(nn.Module):
             weights_ti = attention_probs_ti if self.vis else None
             attention_probs_ti = self.attn_dropout_ti(attention_probs_ti)
 
-            if self.vis is None:
+            if not self.vis:
                 weights = None
             else:
                 weights = torch.cat(
