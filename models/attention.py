@@ -81,20 +81,34 @@ class Attention(nn.Module):
             attention_scores_ti = torch.matmul(query_layer_text, key_layer_img.transpose(-1, -2))
             attention_scores_img = attention_scores_img / math.sqrt(self.attention_head_size)
             attention_probs_img = self.softmax(attention_scores_img)
-            weights = attention_probs_img if self.vis else None
+            weights_img = attention_probs_img if self.vis else None
             attention_probs_img = self.attn_dropout(attention_probs_img)
 
             attention_scores_text = attention_scores_text / math.sqrt(self.attention_head_size)
             attention_probs_text = self.softmax(attention_scores_text)
+            weights_text = attention_probs_text if self.vis else None
             attention_probs_text = self.attn_dropout_text(attention_probs_text)
 
             attention_scores_it = attention_scores_it / math.sqrt(self.attention_head_size)
             attention_probs_it = self.softmax(attention_scores_it)
+            weights_it = attention_probs_it if self.vis else None
             attention_probs_it = self.attn_dropout_it(attention_probs_it)
 
             attention_scores_ti = attention_scores_ti / math.sqrt(self.attention_head_size)
             attention_probs_ti = self.softmax(attention_scores_ti)
+            weights_ti = attention_probs_ti if self.vis else None
             attention_probs_ti = self.attn_dropout_ti(attention_probs_ti)
+
+            if self.vis is None:
+                weights = None
+            else:
+                weights = torch.cat(
+                    (
+                        torch.cat((weights_img, weights_it), dim=-1),
+                        torch.cat((weights_ti, weights_text), dim=-1)
+                    ),
+                    dim=-2
+                )
 
             context_layer_img = torch.matmul(attention_probs_img, value_layer_img)
             context_layer_img = context_layer_img.permute(0, 2, 1, 3).contiguous()
@@ -116,5 +130,5 @@ class Attention(nn.Module):
             attention_output_text = self.out((context_layer_text + context_layer_ti)/2)
             attention_output_img = self.proj_dropout(attention_output_img)
             attention_output_text = self.proj_dropout_text(attention_output_text)
- 
+
             return attention_output_img, attention_output_text, weights
