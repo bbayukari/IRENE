@@ -18,10 +18,10 @@ def get_IRENE_config():
     """Returns the IRENE configuration."""
     config = ml_collections.ConfigDict()
     config.patches = ml_collections.ConfigDict({'size': (16, 16)})
-    config.hidden_size = 768
+    config.hidden_size = 256 #768
     config.transformer = ml_collections.ConfigDict()
-    config.transformer.mlp_dim = 3072
-    config.transformer.num_heads = 12
+    config.transformer.mlp_dim = 1024 #3072
+    config.transformer.num_heads = 4 #12
     config.transformer.num_layers = 12
     config.transformer.attention_dropout_rate = 0.2 # 0.0 - 0.2
     config.transformer.dropout_rate = 0.3 # 0.1 - 0.3
