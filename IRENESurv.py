@@ -74,7 +74,7 @@ class IRENESurv(nn.Module):
 
     def forward(self, img, lab):
         x, attn_weights = self.transformer(img, lab)
-        logits = self.head(torch.mean(x, dim=1))
+        logits = self.head(x[:, 0])
         return logits
 
 
